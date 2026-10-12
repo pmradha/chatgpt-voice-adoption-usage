@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#ffffff">
+    <meta name="description" content="Explore when a natural conversation can help.">
+    <title>ChatGPT Voice Discovery</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/styles.css">
+    <script src="/app.js" defer></script>
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="topbar">
+        <span class="menu-mark" aria-hidden="true"><span></span><span></span></span>
+        <a class="wordmark" href="/" aria-label="ChatGPT home">ChatGPT</a>
+        <button class="icon-button new-chat-button" aria-label="New chat" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14" /></svg></button>
+      </header>
+
+      <section class="conversation" aria-live="polite">
+        <div class="discovery-view" id="discovery-view">
+          <div class="discovery-heading">
+            <p class="eyebrow">A good moment for Voice</p>
+            <h1>What are you trying<br class="desktop-break"> to figure out?</h1>
+          </div>
+          <div class="situation-list" aria-label="Choose a situation">
+            <button class="situation-card" type="button" data-situation="presentation">
+              <span class="situation-icon icon-presentation" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3.5" y="4" width="17" height="12" rx="2"/><path d="M8 20h8m-4-4v4m-4-9 3-3 2 2 3-3"/></svg></span>
+              <span class="situation-copy"><strong>Presentation in 30 minutes?</strong><span>Practice your presentation through a natural conversation.</span></span>
+              <svg class="card-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+            </button>
+            <button class="situation-card" type="button" data-situation="interview">
+              <span class="situation-icon icon-interview" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3.5" y="7" width="17" height="13" rx="2"/><path d="M9 7V4.5h6V7m-11 5h16m-10 0v2h4v-2"/></svg></span>
+              <span class="situation-copy"><strong>Interview coming up?</strong><span>Practice your answers through a natural conversation.</span></span>
+              <svg class="card-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+            </button>
+            <button class="situation-card" type="button" data-situation="decision">
+              <span class="situation-icon icon-decision" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3v5m0 0L7 13m5-5 5 5M7 13l-3 5h6l-3-5Zm10 0-3 5h6l-3-5ZM12 20v1"/></svg></span>
+              <span class="situation-copy"><strong>Stuck between two options?</strong><span>Talk it through and make your decision.</span></span>
+              <svg class="card-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+            </button>
+          </div>
+          <p class="language-hint"><span class="language-dot" aria-hidden="true"></span>Speak naturally. Use the language that feels comfortable.</p>
+        </div>
+
+        <div class="chat-view" id="chat-view" hidden>
+          <div class="chat-heading">
+            <p class="eyebrow" id="selected-label">VOICE PRACTICE</p>
+            <h1 id="selected-title"></h1>
+            <p class="opening-invitation" id="opening-invitation"></p>
+          </div>
+          <div class="message-list" id="message-list" aria-label="Conversation"></div>
+          <div class="voice-panel" id="voice-panel" hidden>
+            <span class="voice-orbit" aria-hidden="true"><span></span></span>
+            <p class="voice-state" id="voice-state">Ready to talk</p>
+            <p class="voice-hint" id="voice-hint">Your microphone stays off until you tap to talk.</p>
+            <div class="voice-actions">
+              <button class="talk-button" id="talk-button" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="12" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21m-3 0h6"/></svg><span>Tap to Talk</span></button>
+              <button class="type-instead-button" id="type-instead-button" type="button">Or type instead</button>
+              <button class="end-button" id="end-button" type="button">End</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="feedback-view" id="feedback-view" hidden aria-live="polite">
+        <div class="feedback-mark" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 11.5a7.5 7.5 0 0 1-7.5 7.5H7l-3 2v-6.5A7.5 7.5 0 1 1 20 11.5Z"/><path d="M8.5 11.5h.01m3.5 0h.01m3.5 0h.01"/></svg></div>
+        <p class="eyebrow">A quick check-in</p>
+        <h1 id="feedback-question">Did Voice help?</h1>
+        <div class="feedback-options" id="feedback-options"></div>
+        <button class="text-button" id="another-situation" type="button" hidden>Try another situation <span aria-hidden="true">→</span></button>
+      </section>
+
+      <div class="notice" id="notice" role="status" hidden></div>
+      <footer class="composer-wrap" id="composer-wrap" hidden>
+        <form class="composer" id="composer-form">
+          <button class="composer-add" type="button" aria-label="Attach a file" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button>
+          <label class="visually-hidden" for="message-input">Message</label>
+          <textarea id="message-input" rows="1" placeholder="Ask anything" maxlength="12000"></textarea>
+          <button class="send-button" type="submit" aria-label="Send message"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5m-6 6 6-6 6 6"/></svg></button>
+        </form>
+        <p class="composer-note">AI responses are generated by Groq. Voice recognition and playback depend on your browser.</p>
+      </footer>
+    </main>
+  </body>
+</html>
