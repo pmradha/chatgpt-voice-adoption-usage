@@ -105,6 +105,35 @@ test('forwards situation and full history with server-only credentials and confi
   assert.deepEqual(providerBody.messages.slice(1), messages);
 });
 
+test('accepts general context and provides open-ended conversation guidance', async () => {
+  let captured;
+  server.close();
+  server = createServer({
+    env: { GROQ_API_KEY: 'test-server-secret' },
+    fetchImpl: async (url, options) => {
+      captured = { url, options };
+      return new Response(JSON.stringify({ choices: [{ message: { content: 'What would you like to talk about?' } }] }), {
+        status: 200,
+        headers: { 'content-type': 'application/json' },
+      });
+    },
+  });
+  await new Promise((resolve) => server.listen(0, '127.0.0.1', resolve));
+  origin = `http://127.0.0.1:${server.address().port}`;
+
+  const response = await fetch(`${origin}/api/chat`, {
+    method: 'POST',
+    headers: { 'content-type': 'application/json' },
+    body: JSON.stringify({ situation: 'general', messages: [{ role: 'user', content: 'Hello' }] }),
+  });
+
+  assert.equal(response.status, 200);
+  assert.deepEqual(await response.json(), { message: 'What would you like to talk about?' });
+  const providerMessages = JSON.parse(captured.options.body).messages;
+  assert.match(providerMessages[0].content, /open-ended, supportive conversation/);
+  assert.deepEqual(providerMessages.slice(1), [{ role: 'user', content: 'Hello' }]);
+});
+
 test('does not return provider error details to the browser', async () => {
   server.close();
   server = createServer({

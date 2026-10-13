@@ -9,7 +9,7 @@ const publicDirectory = resolve(projectDirectory, 'public');
 const maxRequestBytes = 64 * 1024;
 const maxHistoryMessages = 40;
 const maxMessageLength = 12_000;
-const situations = new Set(['presentation', 'interview', 'decision']);
+const situations = new Set(['presentation', 'interview', 'decision', 'general']);
 const contentTypes = {
   '.css': 'text/css; charset=utf-8',
   '.html': 'text/html; charset=utf-8',
@@ -73,6 +73,7 @@ function systemPrompt(situation) {
     presentation: 'Help the person prepare their presentation in the way they ask, including content, structure, delivery, questions, or concerns.',
     interview: 'Help the person prepare for the role and interview they describe, responding to their actual experience, questions, and concerns.',
     decision: 'Help the person think through the options, criteria, trade-offs, and uncertainty they describe without deciding for them.',
+    general: 'Have an open-ended, supportive conversation about whatever the person brings up. Follow their lead and help them explore what is on their mind.',
   };
   return `You are a thoughtful, concise conversational partner in a ChatGPT Voice discovery prototype. The selected context is ${situation}. ${guidance[situation]} Follow the person's lead, including language switches and mixed-language speech. Keep spoken replies brief and natural. Do not assume facts they have not shared, and do not end every reply with a question.`;
 }

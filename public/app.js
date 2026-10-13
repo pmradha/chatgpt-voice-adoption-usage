@@ -14,10 +14,16 @@ const scenarios = {
     title: 'Stuck between two options?',
     invitation: 'Tell me what you’re trying to decide between.',
   },
+  general: {
+    label: 'GENERAL CONVERSATION',
+    title: 'What’s on your mind?',
+    invitation: 'Start wherever you like. I’m here to listen and help think it through.',
+  },
 };
 
 const elements = {
   discovery: document.querySelector('#discovery-view'),
+  generalTalkButton: document.querySelector('#general-talk-button'),
   chat: document.querySelector('#chat-view'),
   selectedLabel: document.querySelector('#selected-label'),
   selectedTitle: document.querySelector('#selected-title'),
@@ -229,7 +235,6 @@ function selectSituation(key) {
   elements.invitation.textContent = scenario.invitation;
   elements.voicePanel.hidden = false;
   setVoiceState('Ready to talk', 'Your microphone stays off until you tap to talk.');
-  elements.input.focus({ preventScroll: true });
 }
 
 function startVoice() {
@@ -311,6 +316,10 @@ function resetToDiscovery() {
 
 document.querySelectorAll('[data-situation]').forEach((button) => {
   button.addEventListener('click', () => selectSituation(button.dataset.situation));
+});
+elements.generalTalkButton.addEventListener('click', () => {
+  selectSituation('general');
+  startVoice();
 });
 elements.talkButton.addEventListener('click', startVoice);
 elements.typeInsteadButton.addEventListener('click', () => {
